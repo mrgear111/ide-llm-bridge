@@ -24,20 +24,15 @@ app.post('/v1/chat/completions', async (req, res) => {
     const isStreaming = req.body.stream === true;
     console.log(`[PROXY] Intercepted chat request. Routing to ${ACTIVE_PROVIDER_NAME.toUpperCase()} provider...`);
 
-    // 1. Check Authentication
     try {
       await activeProvider.checkAuth();
     } catch (authErr) {
       return res.status(401).json({ error: { message: "Authentication Failed", details: authErr.message } });
     }
 
-    // 2. Build the Provider-Specific Request Configuration
     const requestConfig = activeProvider.buildRequestConfig(req.body);
-
-    // 3. Forward the Request to the IDE Backend
     const response = await axios(requestConfig);
 
-    // 4. Handle the Response Stream based on the Provider's custom parsing logic
     if (isStreaming) {
       res.setHeader('Content-Type', 'text/event-stream');
       res.setHeader('Cache-Control', 'no-cache');

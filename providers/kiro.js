@@ -24,12 +24,11 @@ class KiroProvider extends BaseProvider {
   }
 
   buildRequestConfig(openAiBody) {
-    const auth = JSON.parse(fs.readFileSync(this.tokenPath, 'utf8')); // Re-read to ensure freshness
+    const auth = JSON.parse(fs.readFileSync(this.tokenPath, 'utf8'));
     const messages = openAiBody.messages || [];
     let lastUserMessage = "";
     const kiroHistory = [];
 
-    // Map OpenAI messages to Kiro History
     for (let i = 0; i < messages.length; i++) {
       const msg = messages[i];
       if (i === messages.length - 1 && msg.role !== "assistant") {

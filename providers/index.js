@@ -1,10 +1,7 @@
 const KiroProvider = require('./kiro');
 
-// Future providers can be added here
 const providers = {
   kiro: KiroProvider,
-  // copilot: CopilotProvider,
-  // cursor: CursorProvider
 };
 
 function getProvider(name) {
